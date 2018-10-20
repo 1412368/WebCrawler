@@ -29,7 +29,7 @@
 	<link rel="dns-prefetch" href="//vcdn.tikicdn.com/">
 
     <link rel="stylesheet" type="text/css" href="https://pipe.tikicdn.com/desktop/dist/reco-home.css?v=nvms_20181019162042">    
-    <link rel="canonical" href="https://tiki.vn/" />
+    <link rel="canonical" href="http://tiki.vn/" />
             <link rel="apple-touch-icon" href="https://vcdn.tikicdn.com/assets/img/icon175x175.jpeg">
 
     <script src="https://pipe.tikicdn.com/desktop/js/modernizr.js"></script>
@@ -2640,7 +2640,7 @@ a.appendChild(r);
                          </a>
                      </div>
                      <form class="content" method="POST"
-                          action="https://tiki.vn/customer/account/ajaxLogin?ref=https%253A%252F%252Ftiki.vn%252F"
+                          action="https://tiki.vn/customer/account/ajaxLogin?ref=http%253A%252F%252Ftiki.vn%252F"
                           id="login_popup_form">
                         <div class="form-group popup_email" id="popup_login">
                             <label class="control-label">Email / SĐT</label>
@@ -3365,7 +3365,11 @@ a.appendChild(r);
 
     <script src="https://pipe.tikicdn.com/desktop/dist/vendor.js?v=nvms_20181019162042"></script>    <script src="https://pipe.tikicdn.com/desktop/dist/reco-home.js?v=nvms_20181019162042"></script>
 <!--  BEGIN TOKEN -->
+<<<<<<< HEAD
+<input type="hidden" name="TIKI_CSRF_TOKEN" value="cmYvUklWOUdOK3ovS3E5K3AyazFRZz09" />
+=======
 <input type="hidden" name="TIKI_CSRF_TOKEN" value="ODgySUh2MW5wZDJaVTFDTlVnM1Fsdz09" />
+>>>>>>> master
 <!-- END TOKEN -->
 
 
@@ -3394,5 +3398,9 @@ a.appendChild(r);
 </script>
 <!-- END HANDLE MESSAGE FROM FACEBOOK -->
 
+<<<<<<< HEAD
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"5e70a0d5a3","applicationID":"78234830","transactionName":"YlcDYktZWxdTUkFcXFsdNERQF1wKVlRNG0NdQg==","queueTime":0,"applicationTime":29,"atts":"ThAAFANDSBk=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+=======
 <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"5e70a0d5a3","applicationID":"78234830","transactionName":"YlcDYktZWxdTUkFcXFsdNERQF1wKVlRNG0NdQg==","queueTime":0,"applicationTime":23,"atts":"ThAAFANDSBk=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+>>>>>>> master
 </html>

@@ -1,6 +1,7 @@
 import urllib.request
 import codecs
 import urllib.parse
+import ssl
 from pip._vendor.appdirs import unicode
 from html.parser import HTMLParser
 from string import Template
@@ -14,6 +15,7 @@ class LinkFilter:
         linksTuple = (self.links);
         return linksTuple; 
                 
+context = ssl._create_unverified_context()
 class CustomHTMLParser(HTMLParser):
     linkArray=[];
     def handle_starttag(self, tag, attrs):
