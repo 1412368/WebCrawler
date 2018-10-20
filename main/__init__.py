@@ -7,13 +7,21 @@ from html.parser import HTMLParser
 from string import Template
 import re
 
+class LinkFilter:
+    def __init__(self, links):
+        self.links=links
+    def Filter(self):
+        linksTuple = (self.links);
+        return linksTuple; 
+                
 context = ssl._create_unverified_context()
 class CustomHTMLParser(HTMLParser):
+    linkArray=[];
     def handle_starttag(self, tag, attrs):
         if tag=="a":
             for attr in attrs:
                 if attr[0]=="href":
-                    f1.writelines("attribute:{} \n" .format(attr[1]))
+                    self.linkArray.append(attr[1])
 
 #     def handle_endtag(self, tag):
 #         f1.writelines("Encountered a end tag:%s \n" %(tag))
@@ -26,7 +34,9 @@ parser= CustomHTMLParser();
 f1=codecs.open('./testfile.txt', 'w+', 'utf-8');
 f2=codecs.open('./orgfile.txt', 'w+', 'utf-8');
 
-with urllib.request.urlopen(url,context=context) as response:
+with urllib.request.urlopen(url,None,2000) as response:
    convertedHtml =response.read().decode('utf-8');
    f2.write(convertedHtml)
    parser.feed(convertedHtml);
+   for link in parser.linkArray:
+        f3.writelines("{} \n".format(link) );
