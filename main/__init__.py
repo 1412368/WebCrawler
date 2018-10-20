@@ -1,12 +1,13 @@
 import urllib.request
 import codecs
 import urllib.parse
+import ssl
 from pip._vendor.appdirs import unicode
 from html.parser import HTMLParser
 from string import Template
 import re
 
-
+context = ssl._create_unverified_context()
 class CustomHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag=="a":
@@ -25,7 +26,7 @@ parser= CustomHTMLParser();
 f1=codecs.open('./testfile.txt', 'w+', 'utf-8');
 f2=codecs.open('./orgfile.txt', 'w+', 'utf-8');
 
-with urllib.request.urlopen(url,None,2000) as response:
+with urllib.request.urlopen(url,context=context) as response:
    convertedHtml =response.read().decode('utf-8');
    f2.write(convertedHtml)
    parser.feed(convertedHtml);
