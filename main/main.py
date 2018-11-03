@@ -13,7 +13,7 @@ class LinkFilter:
 
 
 data = [];
-url = 'https://lazada.vn'
+url = 'https://vi.wikipedia.com'
 data.append(url)
 connectQueue = deque(data);
 crawler = CrawlerController(connectQueue);

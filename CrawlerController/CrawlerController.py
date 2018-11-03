@@ -11,8 +11,9 @@ from NormalizeUrl.NormalizeUrl import NormalizeUrl
 from threading import Timer
 from UrlFilter.UrlFilter import UrlFilter
 from HtmlParser.HtmlParser import HtmlParser
+import ssl
 
-
+ssl._create_default_https_context = ssl._create_unverified_context
 class CrawlerController:
     f1 = codecs.open('./testfile.txt', 'w+', 'utf-8');
     f2 = codecs.open('./orgfile.txt', 'w+', 'utf-8');
@@ -32,27 +33,29 @@ class CrawlerController:
             self.connectQueue.append(url);
 
     def createConnection(self):
-        url = self.connectQueue.popleft();
-        html = self.getHtmlFromLink(url);
-        urls = self.getLinkFromPage(html, url);
-        filteredUrl = self.urlFilter.filter(urls);
-        self.appendToQueue(filteredUrl);
+        if len(self.connectQueue)>0:
+            url = self.connectQueue.popleft();
+            html = self.getHtmlFromLink(url);
+            urls = self.getLinkFromPage(html, url);
+            filteredUrl = self.urlFilter.filter(urls);
+            self.appendToQueue(filteredUrl);
 
     def getHtmlFromLink(self, url):
         try:
             with urllib.request.urlopen(url, None, 200) as response:
                 convertedHtml = response.read().decode('utf-8');
                 return convertedHtml;
-        except:
-            print("ValueError");
+        except ValueError:
+            print("ValueError",ValueError);
             print(url);
             self.f5.writelines("{} \n".format(url));
             return None
 
     def getLinkFromPage(self, html, orgUrl):
         parsedUrl = urlparse(orgUrl);
-        self.f2.write(html)
-        self.parser.feed(html);
+        if html != None:
+            self.f2.write(html)
+            self.parser.feed(html);
         normalizedUrls = [];
         for link in self.parser.linkArray:
             url = urlparse(link);
