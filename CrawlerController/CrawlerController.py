@@ -46,6 +46,7 @@ class CrawlerController:
             url = urlLayer.get_url();
             layer= urlLayer.get_layer();
             html = self.getHtmlFromLink(url);
+            self.urlFilter.addShoudlNotVisit(url)
             urls = self.getLinkFromPage(html, url);
             filteredUrl = self.urlFilter.filter(urls);
             layerList = self.createLayerList(filteredUrl,layer+1);
