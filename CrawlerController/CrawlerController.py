@@ -64,13 +64,13 @@ class CrawlerController:
             return None
 
     def getLinkFromPage(self, html, orgUrl):
-        parsedUrl = urlparse(orgUrl);
+        parsedUrl = urlparse(orgUrl.strip());
         if html != None:
             self.f2.write(html)
             self.parser.feed(html);
         normalizedUrls = [];
         for link in self.parser.linkArray:
-            url = urlparse(link);
+            url = urlparse(link.strip());
             self.f1.writelines("{} \n".format(url.geturl()));
             fullUrl = url.netloc + url.path + url.params;
             if (fullUrl != "") and (fullUrl != None):
@@ -85,7 +85,7 @@ class CrawlerController:
         for i in range(0, 10):
             r = Timer(1.0, self.createConnection());
             for url in self.connectQueue:
-                self.f4.writelines("{}\n".format(url))
+                self.f4.writelines("{}\n".format(url.url))
             self.f4.writelines("--------------------------------------------\n")
         self.f1.close();
         self.f2.close();

@@ -1,6 +1,7 @@
 from CrawlerController.CrawlerController import CrawlerController
 from UrlLayer.UrlLayer import UrlLayer
 from _collections import deque
+import urllib.parse
 import codecs
 
 
@@ -20,7 +21,7 @@ def seed(urlSeed):
     return seedArray;
 
 data = [];
-url = 'http://tiki.vn'
+url = 'http://lazada.vn'
 data.append(url)
 seeder = seed(data);
 connectQueue = deque(seeder);
