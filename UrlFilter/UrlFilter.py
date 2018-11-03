@@ -13,6 +13,7 @@ class UrlFilter:
         return False
 
 
+
     def filter(self, urls):
         filteredUrls = [];
         for url in urls:
