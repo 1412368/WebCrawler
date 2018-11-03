@@ -41,13 +41,14 @@ class CrawlerController:
             self.appendToQueue(filteredUrl);
 
     def getHtmlFromLink(self, url):
+        print("connecting {} ...".format(url))
         try:
             with urllib.request.urlopen(url, None, 200) as response:
                 convertedHtml = response.read().decode('utf-8');
                 return convertedHtml;
         except ValueError:
-            print("ValueError",ValueError);
             print(url);
+            print(ValueError);
             self.f5.writelines("{} \n".format(url));
             return None
 

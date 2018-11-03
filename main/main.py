@@ -13,7 +13,7 @@ class LinkFilter:
 
 
 data = [];
-url = 'https://vi.wikipedia.com'
+url = 'http://tiki.vn'
 data.append(url)
 connectQueue = deque(data);
 crawler = CrawlerController(connectQueue);
