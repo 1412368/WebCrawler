@@ -24,7 +24,6 @@ class CrawlerController:
     parser = HtmlParser();
     connectQueue = deque([]);
     urlFilter = UrlFilter([]);
-
     def __init__(self, connectQueue):
         self.connectQueue = connectQueue;
 
@@ -47,7 +46,6 @@ class CrawlerController:
                 convertedHtml = response.read().decode('utf-8');
                 return convertedHtml;
         except ValueError:
-            print(url);
             print(ValueError);
             self.f5.writelines("{} \n".format(url));
             return None

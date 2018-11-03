@@ -2,7 +2,7 @@
 orgfile.txt
 testfile.txt
 main/link\.txt
-
+.ide/workspace.xml
 *.txt
 
 NormalizeUrl/__pycache__/__init__\.cpython-37\.pyc
