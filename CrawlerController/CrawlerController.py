@@ -7,7 +7,7 @@ from string import Template
 import re
 from urllib.parse import urlparse
 from _collections import deque
-from NormalizeUrl import NormalizeUrl
+from NormalizeUrl.NormalizeUrl import NormalizeUrl
 from threading import Timer
 from UrlFilter.UrlFilter import UrlFilter
 from HtmlParser.HtmlParser import HtmlParser
