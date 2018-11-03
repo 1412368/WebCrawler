@@ -1,6 +1,6 @@
 from html.parser import HTMLParser
 
-class LinkGetter(HTMLParser):
+class HtmlParser(HTMLParser):
     linkArray=[];
     def handle_starttag(self, tag, attrs):
         if tag=="a":

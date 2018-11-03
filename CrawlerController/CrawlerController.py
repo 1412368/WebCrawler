@@ -9,8 +9,8 @@ from urllib.parse import urlparse
 from _collections import deque
 from NormalizeUrl import NormalizeUrl
 from threading import Timer
-from UrlFilter import UrlFilter
-from HtmlParser import LinkGetter
+from UrlFilter.UrlFilter import UrlFilter
+from HtmlParser.HtmlParser import HtmlParser
 
 
 class CrawlerController:
@@ -20,7 +20,7 @@ class CrawlerController:
     f4 = codecs.open('./queueURl.txt', 'w+', 'utf-8');
     f5 = codecs.open('./connectError.txt', 'w+', 'utf-8');
 
-    parser = LinkGetter();
+    parser = HtmlParser();
     connectQueue = deque([]);
     urlFilter = UrlFilter([]);
 
