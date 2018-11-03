@@ -32,13 +32,24 @@ class CrawlerController:
         for url in urls:
             self.connectQueue.append(url);
 
+    def createLayerList(self, urls, layer):
+        layerList= [];
+        for url in urls:
+            parsedUrl = urlparse(url);
+            urlLayer = UrlLayer([url,parsedUrl.netloc, layer]);
+            layerList.append(urlLayer)
+        return layerList;
+        
     def createConnection(self):
         if len(self.connectQueue)>0:
-            url = self.connectQueue.popleft();
+            urlLayer = self.connectQueue.popleft();
+            url = urlLayer.get_url();
+            layer= urlLayer.get_layer();
             html = self.getHtmlFromLink(url);
             urls = self.getLinkFromPage(html, url);
             filteredUrl = self.urlFilter.filter(urls);
-            self.appendToQueue(filteredUrl);
+            layerList = self.createLayerList(filteredUrl,layer+1);
+            self.appendToQueue(layerList);
 
     def getHtmlFromLink(self, url):
         print("connecting {} ...".format(url))

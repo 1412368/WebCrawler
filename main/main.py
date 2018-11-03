@@ -20,7 +20,7 @@ def seed(urlSeed):
     return seedArray;
 
 data = [];
-url = 'https://tiki.vn'
+url = 'http://tiki.vn'
 data.append(url)
 seeder = seed(data);
 connectQueue = deque(seeder);
