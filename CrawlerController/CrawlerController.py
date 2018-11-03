@@ -11,6 +11,7 @@ from NormalizeUrl.NormalizeUrl import NormalizeUrl
 from threading import Timer
 from UrlFilter.UrlFilter import UrlFilter
 from HtmlParser.HtmlParser import HtmlParser
+from UrlLayer.UrlLayer import UrlLayer
 import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context

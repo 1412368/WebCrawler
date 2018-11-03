@@ -6,3 +6,5 @@ main/link\.txt
 *.txt
 
 NormalizeUrl/__pycache__/__init__\.cpython-37\.pyc
+
+*.pyc
