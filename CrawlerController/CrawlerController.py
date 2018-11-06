@@ -54,14 +54,15 @@ class CrawlerController:
 
     def getHtmlFromLink(self, url):
         print("connecting {} ...".format(url))
-        try:
-            with urllib.request.urlopen(url, None, 200) as response:
-                convertedHtml = response.read().decode('utf-8');
-                return convertedHtml;
-        except ValueError:
-            print(ValueError);
-            self.f5.writelines("{} \n".format(url));
-            return None
+        if self.urlFilter.checkRobots(url):
+            try:
+                with urllib.request.urlopen(url, None, 200) as response:
+                    convertedHtml = response.read().decode('utf-8');
+                    return convertedHtml;
+            except ValueError:
+                print(ValueError);
+                self.f5.writelines("{} \n".format(url));
+                return None
 
     def getLinkFromPage(self, html, orgUrl):
         parsedUrl = urlparse(orgUrl.strip());

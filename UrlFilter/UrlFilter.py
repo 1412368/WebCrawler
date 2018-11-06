@@ -15,19 +15,26 @@ class UrlFilter:
             if self.isInShouldNotVisit(url):
                 self.shouldNotVisit.append(urls);
                 
-    def checkOrgUrlWithNewUrl(self, newUrl):
+    def checkRobots(self, newUrl):
         parsedNewUrl = urlparse(newUrl);
         if (self.orgUrl != parsedNewUrl.netloc) and (parsedNewUrl.netloc!=""):
-            self.orgUrl= parsedNewUrl.netloc;
-            normalizedUrl= NormalizeUrl(self.orgUrl,self.orgUrl);
+            normalizedUrl= NormalizeUrl(parsedNewUrl.netloc,parsedNewUrl.netloc);
             normalized = normalizedUrl.convertUrl();
-            self.robotsParser.set_url(normalized+"/robots.txt");
             try:
+                urllib.request.urlopen(normalized+"/robots.txt", None, 200)
+            except IOError as e :
+                print(e);
+                return False;
+            try:
+                self.robotsParser.set_url(normalized+"/robots.txt");
                 self.robotsParser.read();
-            except ValueError:
+                self.orgUrl= parsedNewUrl.netloc;
+            except IOError:
+                print(self.orgUrl);
+                print(IOError);
                 print("can't connect")
-    def robotsFilter(self, url):
-        return self.robotsParser.can_fetch('*',url);    
+                return False;
+        return self.robotsParser.can_fetch('*',newUrl);            
     
     def isInShouldNotVisit(self, url):
         if url in self.shouldNotVisit:
@@ -37,8 +44,7 @@ class UrlFilter:
     def filter(self, urls):
         filteredUrls = [];
         for url in urls:
-            self.checkOrgUrlWithNewUrl(url);
-            if self.isInShouldNotVisit(url)==False and (url != None) and self.robotsFilter(url):
+            if self.isInShouldNotVisit(url)==False and (url != None):
 #             if self.isInShouldNotVisit(url)==False and (url != ""):
                 filteredUrls.append(url);
                 self.shouldNotVisit.append(url)
