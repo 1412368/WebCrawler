@@ -1,9 +1,7 @@
 from CrawlerController.CrawlerController import CrawlerController
 from UrlLayer.UrlLayer import UrlLayer
-from _collections import deque
-import urllib.parse
-import codecs
-
+import sys
+import os
 
 class LinkFilter:
     def __init__(self, links):
@@ -19,12 +17,16 @@ def seed(urlSeed):
         urlLayer = UrlLayer([url,url,0]);
         seedArray.append(urlLayer);
     return seedArray;
+if __name__ == '__main__':
+    try:
+        url = ['http://lazada.vn']
+        seeder = seed(url);
+        crawler = CrawlerController(seeder);
+        crawler.controller();
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
 
-data = [];
-url = 'http://lazada.vn'
-data.append(url)
-seeder = seed(data);
-connectQueue = deque(seeder);
-crawler = CrawlerController(connectQueue);
-
-crawler.controller();

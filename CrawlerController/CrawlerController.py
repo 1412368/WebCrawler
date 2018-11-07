@@ -1,12 +1,9 @@
 import urllib.request
 import codecs
 import urllib.parse
-from pip._vendor.appdirs import unicode
-from html.parser import HTMLParser
-from string import Template
-import re
+import threading
 from urllib.parse import urlparse
-from _collections import deque
+import queue
 from NormalizeUrl.NormalizeUrl import NormalizeUrl
 from threading import Timer
 from UrlFilter.UrlFilter import UrlFilter
@@ -23,14 +20,14 @@ class CrawlerController:
     f5 = codecs.open('./connectError.txt', 'w+', 'utf-8');
 
     parser = HtmlParser();
-    connectQueue = deque([]);
     urlFilter = UrlFilter([]);
-    def __init__(self, connectQueue):
-        self.connectQueue = connectQueue;
-
+    def __init__(self, seeder):
+        self.connectQueue = queue.Queue();
+        for item in seeder:
+            self.connectQueue.put(item)
     def appendToQueue(self, urls):
         for url in urls:
-            self.connectQueue.append(url);
+            self.connectQueue.put(url);
 
     def createLayerList(self, urls, layer):
         layerList= [];
@@ -40,17 +37,15 @@ class CrawlerController:
             layerList.append(urlLayer)
         return layerList;
         
-    def createConnection(self):
-        if len(self.connectQueue)>0:
-            urlLayer = self.connectQueue.popleft();
-            url = urlLayer.get_url();
-            layer= urlLayer.get_layer();
-            html = self.getHtmlFromLink(url);
-            self.urlFilter.addShoudlNotVisit(url)
-            urls = self.getLinkFromPage(html, url);
-            filteredUrl = self.urlFilter.filter(urls);
-            layerList = self.createLayerList(filteredUrl,layer+1);
-            self.appendToQueue(layerList);
+    def createConnection(self,urlLayer):
+        url = urlLayer.get_url();
+        layer= urlLayer.get_layer();
+        html = self.getHtmlFromLink(url);
+        self.urlFilter.addShoudlNotVisit(url)
+        urls = self.getLinkFromPage(html, url);
+        filteredUrl = self.urlFilter.filter(urls);
+        layerList = self.createLayerList(filteredUrl,layer+1);
+        self.appendToQueue(layerList);
 
     def getHtmlFromLink(self, url):
         print("connecting {} ...".format(url))
@@ -80,16 +75,25 @@ class CrawlerController:
                 self.f3.writelines("{} \n".format(fullUrl));
                 normalizedUrls.append(fullUrl);
         return normalizedUrls;
-
     def controller(self):
-        #     while len(connectQueue)>0:
-        for i in range(0, 10):
-            r = Timer(1.0, self.createConnection());
-            for url in self.connectQueue:
-                self.f4.writelines("{}\n".format(url.url))
-            self.f4.writelines("--------------------------------------------\n")
-        self.f1.close();
-        self.f2.close();
-        self.f3.close();
-        self.f4.close();
-        self.f5.close();
+        while(not self.connectQueue.empty()):
+            threadList=[]
+            while (threading.activeCount() < 8):
+                if not self.connectQueue.empty():
+                    urlLayer = self.connectQueue.get();
+                    t = threading.Thread(target=self.createConnection, args=[urlLayer])
+                    t.start()
+                    threadList.append(t)
+                    print("queue length {}".format(self.connectQueue.qsize()))
+            for i in threadList:
+                i.join()
+        # for i in range(0, 10):
+        #     r = Timer(1.0, self.createConnection());
+            # for url in self.connectQueue:
+            #     self.f4.writelines("{}\n".format(url.url))
+            # self.f4.writelines("--------------------------------------------\n")
+        # self.f1.close();
+        # self.f2.close();
+        # self.f3.close();
+        # self.f4.close();
+        # self.f5.close();
