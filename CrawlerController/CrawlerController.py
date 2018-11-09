@@ -19,7 +19,6 @@ class CrawlerController:
     f4 = codecs.open('./queueURl.txt', 'w+', 'utf-8');
     f5 = codecs.open('./connectError.txt', 'w+', 'utf-8');
 
-    parser = HtmlParser();
     urlFilter = UrlFilter([]);
     def __init__(self, seeder):
         self.connectQueue = queue.Queue();
@@ -41,11 +40,24 @@ class CrawlerController:
         url = urlLayer.get_url();
         layer= urlLayer.get_layer();
         html = self.getHtmlFromLink(url);
-        self.urlFilter.addShoudlNotVisit(url)
-        urls = self.getLinkFromPage(html, url);
-        filteredUrl = self.urlFilter.filter(urls);
-        layerList = self.createLayerList(filteredUrl,layer+1);
-        self.appendToQueue(layerList);
+        self.urlFilter.addShoudlNotVisit(url);
+        parser = HtmlParser();
+        if html!=None:
+            parser.feed(html);
+            urls = self.getLinkFromPage(html, url,parser);
+#       must run getLinkFromPage before
+            title = parser.title;
+            if title!= "":
+                htmlFile = codecs.open('./storageFolder/'+title+'.html', 'w+', 'utf-8');
+                txtFile = codecs.open('./storageFolder/'+title+'.txt', 'w+', 'utf-8');
+                htmlFile.write(html);
+                for text in parser.txtArray:
+                    txtFile.write(text);
+                htmlFile.close();
+                txtFile.close();
+            filteredUrl = self.urlFilter.filter(urls);
+            layerList = self.createLayerList(filteredUrl,layer+1);
+            self.appendToQueue(layerList);
 
     def getHtmlFromLink(self, url):
         print("connecting {} ...".format(url))
@@ -58,14 +70,11 @@ class CrawlerController:
                 print(ValueError);
                 self.f5.writelines("{} \n".format(url));
                 return None
-
-    def getLinkFromPage(self, html, orgUrl):
+    
+    def getLinkFromPage(self, html, orgUrl,parser):
         parsedUrl = urlparse(orgUrl.strip());
-        if html != None:
-            self.f2.write(html)
-            self.parser.feed(html);
         normalizedUrls = [];
-        for link in self.parser.linkArray:
+        for link in parser.linkArray:
             url = urlparse(link.strip());
             self.f1.writelines("{} \n".format(url.geturl()));
             fullUrl = url.netloc + url.path + url.params;

@@ -19,7 +19,7 @@ def seed(urlSeed):
     return seedArray;
 if __name__ == '__main__':
     try:
-        url = ['http://lazada.vn']
+        url = ['http://vnexpress.net']
         seeder = seed(url);
         crawler = CrawlerController(seeder);
         crawler.controller();
