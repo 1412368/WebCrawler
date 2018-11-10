@@ -13,12 +13,6 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 class CrawlerController:
-    f1 = codecs.open('./testfile.txt', 'w+', 'utf-8');
-    f2 = codecs.open('./orgfile.txt', 'w+', 'utf-8');
-    f3 = codecs.open('./link.txt', 'w+', 'utf-8');
-    f4 = codecs.open('./queueURl.txt', 'w+', 'utf-8');
-    f5 = codecs.open('./connectError.txt', 'w+', 'utf-8');
-
     urlFilter = UrlFilter([]);
     def __init__(self, seeder):
         self.connectQueue = queue.Queue();
@@ -68,7 +62,6 @@ class CrawlerController:
                     return convertedHtml;
             except ValueError:
                 print(ValueError);
-                self.f5.writelines("{} \n".format(url));
                 return None
     
     def getLinkFromPage(self, html, orgUrl,parser):
@@ -76,12 +69,10 @@ class CrawlerController:
         normalizedUrls = [];
         for link in parser.linkArray:
             url = urlparse(link.strip());
-            self.f1.writelines("{} \n".format(url.geturl()));
             fullUrl = url.netloc + url.path + url.params;
             if (fullUrl != "") and (fullUrl != None):
                 normalizeUrl = NormalizeUrl(fullUrl, parsedUrl.netloc)
                 fullUrl = normalizeUrl.convertUrl();
-                self.f3.writelines("{} \n".format(fullUrl));
                 normalizedUrls.append(fullUrl);
         return normalizedUrls;
     def controller(self):

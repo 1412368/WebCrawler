@@ -13,6 +13,7 @@ class HtmlParser(HTMLParser):
                     self.linkArray.append(attr[1])
         if tag=="title":
             self.isTitle = True
+            self.txtArray = [];
         if tag!="script":
             self.isTxt= True;
     def handle_data(self, data):
